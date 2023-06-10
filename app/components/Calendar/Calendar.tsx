@@ -6,14 +6,16 @@ import Record from "./Record";
 import TestModal from "../modal/TestModal";
 import { useDidMountEffect } from "@/useDidMountEffect";
 import Loading from "../assets/Loading";
+import { signIn } from "next-auth/react";
 
-export default function Calendar<T>(props: T) {
+export default function Calendar<T>(props: any) {
   const [monthVal, setMonthVal] = useState(0);
   const [today, setToday] = useState("");
   const [dateClickChecker, setDateClickChecker]: any = useState();
   const [onModal, setOnModal] = useState(false);
   const [cheCal, setCheCal]: any = useState([]);
   const [loading, setLoading] = useState(false);
+
   const useWidth = () => {
     const [windowWidth, setWindowWidth] = useState(0);
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -21,12 +23,10 @@ export default function Calendar<T>(props: T) {
       window.addEventListener("resize", handleResize);
       return () => window.removeEventListener("resize", handleResize);
     }, [handleResize]);
-    console.log(windowWidth);
     return windowWidth;
   };
 
   useEffect(() => {
-    console.log("Calendar has worked");
     var currDate = new Date();
     setMonthVal(currDate.getMonth());
     setToday(toStringByFormatting(currDate));
@@ -83,13 +83,16 @@ export default function Calendar<T>(props: T) {
   };
 
   async function checkWorkData(month: number) {
+    if (props.session == "null" || props.session == undefined) {
+      signIn();
+    }
     setLoading(true);
     let calendar = getCalendar();
     let dates = calendar[month];
 
     let response = await fetch("api/checkWorkData", {
       method: "POST",
-      body: JSON.stringify(dates),
+      body: JSON.stringify({ email: props.session.user.email, dates: dates }),
     });
     let result = await response.json();
     setLoading(false);
@@ -97,7 +100,7 @@ export default function Calendar<T>(props: T) {
   }
   return (
     <div className="flex flex-col m-0 desktop:mt-4s h-max w-full mr-auto">
-      <div className="flex flex-row">
+      <div className="flex flex-row mx-2">
         <button
           onClick={() => {
             if (monthVal != 0) {
@@ -116,17 +119,17 @@ export default function Calendar<T>(props: T) {
           next
         </button>
       </div>
-      <div className="grid grid-cols-3 h-screen desktop:h-max text-xl desktop:text-lg">
-        <div className="flex flex-col col-span-3 desktop:col-span-2">
+      <div className="grid grid-cols-3 h-screen w-screen desktop:h-max desktop:w-full text-xl desktop:text-lg">
+        <div className="flex flex-col col-span-3 w-full mx-2 desktop:col-span-2">
           <Daybar />
           {loading ? (
             <Loading />
           ) : (
-            <div className="grid grid-cols-7 w-full animate-caload">
+            <div className="grid grid-cols-7 animate-caload">
               {cheCal?.map((item: any, index: number) => {
                 return (
                   <div
-                    className="m-5 mt-2 w-full h-24"
+                    className="mt-2 w-full h-24"
                     key={index}
                     onClick={(e) => {
                       setToday(item.date);
@@ -141,8 +144,8 @@ export default function Calendar<T>(props: T) {
                       </h1>
                     )}
                     {item.checker ? (
-                      <div className="w-fit bg-marker text-sm  rounded-lg desktop:text-base">
-                        운동했어요
+                      <div className="w-fit px-2 mt-2 text-sm desktop:text-base">
+                        <p className=" bg-marker rounded-lg ">오운완</p>
                       </div>
                     ) : (
                       <></>
@@ -154,10 +157,10 @@ export default function Calendar<T>(props: T) {
           )}
         </div>
         {useWidth() > 1280 ? (
-          <Record date={today} />
+          <Record date={today} session={props.session} />
         ) : onModal ? (
           <TestModal setOnModal={() => setOnModal(false)}>
-            <Record date={today} />
+            <Record date={today} session={props.session} />
           </TestModal>
         ) : null}
       </div>

@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Banner from "./components/assets/Banner";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { defaultCollections } from "@next-auth/mongodb-adapter";
 
 const inter = Inter({ subsets: ["latin"] });
 

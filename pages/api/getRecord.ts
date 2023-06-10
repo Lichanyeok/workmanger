@@ -10,8 +10,9 @@ export default async function handler(
     let body = JSON.parse(req.body);
     let date = body.date;
     console.log("getRecord date : " + date);
-    let result = await db.collection("WorkRecord").findOne({ date: date });
-    console.log("getRecord result : " + result);
+    let result = await db
+      .collection("WorkRecord")
+      .findOne({ date: date, email: body.email });
     res.status(200).json(result);
   }
 }

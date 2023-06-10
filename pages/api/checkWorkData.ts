@@ -11,20 +11,18 @@ export default async function handler(
     console.log(JSON.parse(req.body));
     let result = new Array();
 
-    for (let index = 0; index < data.length; index++) {
-      if (data[index] !== "") {
+    for (let index = 0; index < data.dates.length; index++) {
+      if (data.dates[index] !== "") {
         var val = await db
           .collection("WorkRecord")
-          .findOne({ date: data[index] });
+          .findOne({ date: data.dates[index], email: data.email });
         val
-          ? result.push({ date: data[index], checker: true })
-          : result.push({ date: data[index], checker: false });
+          ? result.push({ date: data.dates[index], checker: true })
+          : result.push({ date: data.dates[index], checker: false });
       } else {
         result.push({ date: "", checker: false });
       }
     }
-
-    console.log(result);
     res.status(200).json(result);
   }
 }

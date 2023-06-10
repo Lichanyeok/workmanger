@@ -14,21 +14,28 @@ export default function Record(props: any): any {
   }, [props.date]);
 
   async function fetchData() {
-    console.log(props.date);
-    if (props.date !== undefined && props.date !== "") {
-      const response = await fetch("api/getRecord", {
-        method: "POST",
-        body: JSON.stringify({ date: props.date }),
-      });
-      const result = await response.json();
-      console.log(result);
-      if (result !== null) {
-        setWorkData(result);
-      } else {
-        setWorkData(undefined);
-      }
+    if (
+      props.date == undefined ||
+      props.date == null ||
+      props.session == undefined ||
+      props.session == null
+    ) {
+      return;
     }
-    console.log("useEffect has worked");
+
+    const response = await fetch("api/getRecord", {
+      method: "POST",
+      body: JSON.stringify({
+        email: props.session.user.email,
+        date: props.date,
+      }),
+    });
+    const result = await response.json();
+    if (result !== null) {
+      setWorkData(result);
+    } else {
+      setWorkData(undefined);
+    }
   }
 
   const addRoutine = (index: any): any => {
@@ -50,7 +57,6 @@ export default function Record(props: any): any {
     let newObj = { ...workData };
     newObj.works = newArr;
     setWorkData(newObj);
-    console.log(workData);
   };
 
   const createWork = (date: any): any => {
@@ -66,16 +72,22 @@ export default function Record(props: any): any {
       ],
     };
   };
-  const editTrt = (data: any) => {
-    console.log(data);
-    fetch("/api/saveRecord", {
+  const editTrt = async (data: any) => {
+    if (
+      props.date == undefined ||
+      props.date == null ||
+      props.session == undefined ||
+      props.session == null
+    ) {
+      return;
+    }
+    data.email = props.session.user.email;
+
+    let response = await fetch("/api/saveRecord", {
       method: "POST",
       body: JSON.stringify(data),
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then(() => {});
+    });
+    let result = await response.json();
   };
 
   if (workData !== undefined) {
