@@ -92,7 +92,7 @@ export default function Record(props: any): any {
 
   if (workData !== undefined) {
     return (
-      <div className="sm:invisible flex flex-col items-center m-0 mt-5 h-max col-span-1">
+      <div className="flex flex-col items-center m-0 mt-5 h-max col-span-1">
         <div className="p-0 w-64 h-10 text-2xl text-center">
           {isEdit ? (
             <input
