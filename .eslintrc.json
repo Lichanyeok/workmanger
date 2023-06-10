@@ -1,3 +1,8 @@
+/* eslint-disable */
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "env": {
+    "node": true,
+    "browser": true
+  }
 }
