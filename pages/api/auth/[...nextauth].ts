@@ -9,8 +9,8 @@ import { AuthOptions } from "next-auth";
 export const authOptions: AuthOptions = {
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_CLIENT_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET_ID ?? "",
+      clientId: process.env.GITHUB_CLIENT_ID || "",
+      clientSecret: process.env.GITHUB_SECRET_ID || "",
     }),
     CredentialsProvider({
       //1. 로그인페이지 폼 자동생성해주는 코드
