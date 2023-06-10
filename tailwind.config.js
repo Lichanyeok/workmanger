@@ -29,7 +29,7 @@ module.exports = {
       white: "#ffffff",
       midnight: "#f0f8ff",
       marker: "#97E1FF",
-      btnCol: "rgba()",
+      btnCol: "rgba(0,0,0,0.7)",
     },
     screens: {
       tablet: "640px",
