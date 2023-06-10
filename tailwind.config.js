@@ -12,10 +12,25 @@ module.exports = {
           "0%": { opacity: 0 },
           "100%": { opacity: 100 },
         },
+        blink: {
+          "0%": { opacity: 0 },
+          "40%": { opacity: 20 },
+          "600%": { opacity: 0 },
+          "100%": { opacity: 20 },
+        },
       },
-      animation: { load: "load 2s ease-in-out" },
+      animation: {
+        load: "load 2s ease-in-out",
+        blink: "blink 2s ease-in-out infinite",
+        caload: "load 0.5s ease-in-out",
+      },
     },
-    colors: { white: "#ffffff", midnight: "#121063", marker: "#97E1FF" },
+    colors: {
+      white: "#ffffff",
+      midnight: "#f0f8ff",
+      marker: "#97E1FF",
+      btnCol: "rgba()",
+    },
     screens: {
       tablet: "640px",
       // => @media (min-width: 640px) { ... }

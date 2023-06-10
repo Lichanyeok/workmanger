@@ -1,5 +1,5 @@
 export default function Daybar() {
-  const dayCss = "m-5 ";
+  const dayCss = "m-5 mt-0";
   return (
     <div className="grid grid-cols-7 justify-items-center font-semibold">
       <div className={dayCss}>일</div>
